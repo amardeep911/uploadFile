@@ -1,21 +1,11 @@
 "use client";
-import React from "react";
+import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import UploadButton from "@/components/UploadButton";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu";
-import { Button } from "@/components/ui/button";
-import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import { Upload } from "lucide-react";
-import UploadButton from "@/components/UploadButton";
+
+import { useEffect, useState } from "react";
+import { getFilesByUserIds } from "../api/files/fileHandling";
 type Props = {};
 
 const page = (props: Props) => {
@@ -25,12 +15,55 @@ const page = (props: Props) => {
       redirect("api/auth/signin?callbackUrl=/Dashboard");
     },
   });
+  const [files, setFiles] = useState<any[]>([]);
 
+  useEffect(() => {
+    if (session?.user) {
+      fetchFilesByUserId(session.user.id);
+    }
+  }, [session]);
+
+  const fetchFilesByUserId = async (userId: any) => {
+    try {
+      const response = await getFilesByUserIds(userId);
+      console.log(response);
+      if (response && response.body.files) {
+        setFiles(response.body.files);
+      } else {
+        console.error("Error fetching files:", response.status);
+      }
+    } catch (error) {
+      console.error("Error fetching files:", error);
+    }
+  };
+  console.log(files);
+  const handleFileUploaded = () => {
+    // Refetch files list after file upload
+    fetchFilesByUserId(session.user.id);
+  };
   return (
     <div className="z-50 top-0 w-full  inset-x-0 h-screen flex justify-between">
       <MaxWidthWrapper className="w-full h-full border-4 rounded-2xl border-zinc-300">
         <div className="border-b border-gray-200 sticky z-50 top-0 flex justify-end w-full align-middle items-center  inset-x-0 h-16 ">
-          <UploadButton />
+          <UploadButton onFileUploaded={handleFileUploaded} />
+        </div>
+        {/* //all the file uploded will be view here in this div */}
+        <div>
+          <h1>Files</h1>
+          <ul className="flex flex-wrap justify-start gap-5 p-5">
+            {files.map((file: any) => (
+              <li
+                key={file._id}
+                className="border border-gray-300 rounded-lg overflow-hidden"
+              >
+                <img
+                  className="object-cover w-60 h-60"
+                  src={file.fileUrl}
+                  alt={file.name}
+                />
+              </li>
+            ))}
+          </ul>
         </div>
       </MaxWidthWrapper>
     </div>

@@ -7,9 +7,11 @@ import crypto from "crypto";
 import { getSignedURL } from "@/app/action";
 import Dropzone from "react-dropzone";
 import { set } from "react-hook-form";
-type Props = {};
+type Props = {
+  onFileUploaded: () => void;
+};
 
-const UploadButton = (props: Props) => {
+const UploadButton = ({ onFileUploaded }: Props) => {
   const [file, setfile] = useState<File | undefined>(undefined);
 
   const [fileUrl, setfileUrl] = useState<string | undefined>(undefined);
@@ -81,8 +83,8 @@ const UploadButton = (props: Props) => {
         console.log(signedUrlResult.error.message);
         return;
       }
-      const url = signedUrlResult.success?.url;
-
+      const { url, savedFile } = signedUrlResult.success;
+      console.log(savedFile._id);
       await fetch(url, {
         method: "PUT",
         body: file,
@@ -90,6 +92,7 @@ const UploadButton = (props: Props) => {
           "Content-Type": file?.type || "",
         },
       });
+      onFileUploaded();
       setisOpen(false);
       setfile(undefined);
       setfileUrl(undefined);
@@ -101,6 +104,7 @@ const UploadButton = (props: Props) => {
   };
 
   const [isOpen, setisOpen] = useState<boolean>(false);
+
   return (
     <Dialog
       open={isOpen}

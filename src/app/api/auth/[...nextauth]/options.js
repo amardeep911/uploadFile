@@ -1,7 +1,7 @@
 import GithubProvider from "next-auth/providers/github";
 
 import GoogleProvider from "next-auth/providers/google";
-import User from "../../../models/User";
+import { User } from "../../../models/User";
 
 export const options = {
   providers: [
@@ -23,7 +23,6 @@ export const options = {
     }),
     GoogleProvider({
       profile(profile) {
-        console.log("profile google", profile);
         let userRole = "google user";
         return {
           ...profile,
@@ -37,21 +36,25 @@ export const options = {
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
+      console.log("user form here", user);
       //I want to save the user data accoiring to user schema
 
       try {
         // Extract user details from the profile
-        const { name, email, picture, role } = user;
+        const { name, email, picture, role, id } = user;
+
         console.log(name);
         console.log(email);
         console.log(picture);
         console.log(role);
+        console.log(id);
         // Check if the user already exists in your database
         let existingUser = await User.findOne({ email });
 
         // If the user doesn't exist, create a new user
         if (!existingUser) {
           const newUser = new User({
+            id,
             email,
             name,
             picture,
@@ -75,10 +78,12 @@ export const options = {
 
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token, user }) {
       if (token?.role) {
         session.user.role = token.role;
+        session.user.id = token.sub;
       }
+
       return session;
     },
   },
