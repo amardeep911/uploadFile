@@ -1,8 +1,4 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import { Button, buttonVariants } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
-
 export default function Home() {
   return (
     <MaxWidthWrapper>
@@ -24,8 +20,6 @@ export default function Home() {
             <Link href="/logIn">Log in </Link> &rarr;
           </Button>
         </div> */}
-
-        <h1>Welcome</h1>
       </div>
     </MaxWidthWrapper>
   );
