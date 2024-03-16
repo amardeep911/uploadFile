@@ -16,14 +16,16 @@ export default function Home() {
           files and share them with others. No need to sign up, just upload and
           share.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 mt-6">
+        {/* <div className="flex flex-col sm:flex-row gap-4 mt-6">
           <Link href="/products" className={buttonVariants()}>
             Contact Us
           </Link>
           <Button variant="ghost">
             <Link href="/logIn">Log in </Link> &rarr;
           </Button>
-        </div>
+        </div> */}
+
+        <h1>Welcome</h1>
       </div>
     </MaxWidthWrapper>
   );

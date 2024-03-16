@@ -2,8 +2,11 @@ import Link from "next/link";
 import React from "react";
 
 type Props = {};
+import { getServerSession } from "next-auth";
+import { options } from "../../app/api/auth/[...nextauth]/options";
 
-const NavItems = (props: Props) => {
+const NavItems = async (props: Props) => {
+  const session = await getServerSession(options);
   return (
     <div className="flex gap-4 h-full">
       <ul className="flex h-full items-center gap-6">
@@ -39,6 +42,13 @@ const NavItems = (props: Props) => {
           >
             Projects
           </Link>
+        </li>
+        <li>
+          {session ? (
+            <Link href="/api/auth/signout?callbackUrl=/">Logout</Link>
+          ) : (
+            <Link href="/api/auth/signin">Login</Link>
+          )}
         </li>
       </ul>
     </div>
