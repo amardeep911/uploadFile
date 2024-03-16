@@ -28,8 +28,8 @@ const page = (props: Props) => {
 
   return (
     <div className="z-50 top-0 w-full  inset-x-0 h-screen flex justify-between">
-      <MaxWidthWrapper className="w-full h-full border-4 border-black">
-        <div className="bg-gray-300 sticky z-50 top-0 flex justify-end w-full align-middle items-center  inset-x-0 h-16 ">
+      <MaxWidthWrapper className="w-full h-full border-4 rounded-2xl border-zinc-300">
+        <div className="border-b border-gray-200 sticky z-50 top-0 flex justify-end w-full align-middle items-center  inset-x-0 h-16 ">
           <UploadButton />
         </div>
       </MaxWidthWrapper>

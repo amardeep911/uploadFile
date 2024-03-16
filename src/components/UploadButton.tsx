@@ -5,6 +5,8 @@ import { Button } from "./ui/button";
 
 import crypto from "crypto";
 import { getSignedURL } from "@/app/action";
+import Dropzone from "react-dropzone";
+import { set } from "react-hook-form";
 type Props = {};
 
 const UploadButton = (props: Props) => {
@@ -88,9 +90,13 @@ const UploadButton = (props: Props) => {
           "Content-Type": file?.type || "",
         },
       });
+      setisOpen(false);
+      setfile(undefined);
+      setfileUrl(undefined);
+      setstatusMessage("");
     }
 
-    setstatusMessage("Finished");
+    setstatusMessage("");
     setloading(false);
   };
 
@@ -103,46 +109,48 @@ const UploadButton = (props: Props) => {
       }}
     >
       <DialogTrigger onClick={() => setisOpen(true)} asChild>
-        <Button>Upload Pdf</Button>
+        <Button>Upload</Button>
       </DialogTrigger>
 
       <DialogContent>
-        <div className="flex flex-col justify-center align-middle text-center">
-          <h2 className="text-lg font-bold mb-4">
-            Upload the file you want to store
-          </h2>
-          <form
-            className="flex flex-col"
-            action="/api/upload"
-            method="post"
-            encType="multipart/form-data"
-            onSubmit={handleSubmit}
-          >
-            <input
-              type="file"
-              name="media"
-              accept="image/jpeg"
-              onChange={onHandleChange}
-              className="mb-4"
-            />
-            <button
-              type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-              disabled={buttonDisabled}
-            >
-              Upload
-            </button>
-          </form>
-          {fileUrl && (
-            <div className="flex flex-col justify-center align-middle text-center items-center">
-              <h2 className="text-lg font-bold mt-4">Preview</h2>
-              <img src={fileUrl} alt="preview" width={200} height={200} />
-            </div>
+        <Dropzone
+          multiple={false}
+          onDrop={(acceptedFiles) => {
+            setfile(acceptedFiles[0]);
+            setfileUrl(URL.createObjectURL(acceptedFiles[0]));
+          }}
+        >
+          {({ getRootProps, getInputProps }) => (
+            <section className="flex flex-col justify-center align-middle items-center gap-5">
+              <div {...getRootProps()} className="flex justify-center">
+                <input {...getInputProps()} />
+                {file ? (
+                  ""
+                ) : (
+                  <p>
+                    Drag and drop some files here, or{" "}
+                    <span className="text-blue-700 cursor-pointer">click</span>{" "}
+                    to select files
+                  </p>
+                )}
+              </div>
+
+              {fileUrl && (
+                <div>
+                  <h2>Preview</h2>
+                  <img src={fileUrl} alt="preview" />
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit}>
+                <Button type="submit" disabled={buttonDisabled}>
+                  Upload
+                </Button>
+              </form>
+              <section>{statusMessage && <p>{statusMessage}</p>}</section>
+            </section>
           )}
-          {statusMessage && (
-            <h1 className="text-xl font-bold mt-4">{statusMessage}</h1>
-          )}
-        </div>
+        </Dropzone>
       </DialogContent>
     </Dialog>
   );
