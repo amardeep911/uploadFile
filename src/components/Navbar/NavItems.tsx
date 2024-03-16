@@ -21,9 +21,9 @@ const NavItems = async (props: Props) => {
         <li>
           <Link
             className=" block font-medium text-gray-900 hover:text-blue-700"
-            href="/about-us"
+            href="/Dashboard"
           >
-            About
+            Dashboard
           </Link>
         </li>
         <li>
@@ -31,7 +31,7 @@ const NavItems = async (props: Props) => {
             className=" block font-medium text-gray-900 hover:text-blue-700"
             href="/contact"
           >
-            Contact
+            Plan
           </Link>
         </li>
 
@@ -40,7 +40,7 @@ const NavItems = async (props: Props) => {
             className=" block font-medium text-gray-900 hover:text-blue-700"
             href="/projects"
           >
-            Projects
+            Contact
           </Link>
         </li>
 
