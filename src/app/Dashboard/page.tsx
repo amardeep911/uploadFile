@@ -3,10 +3,16 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import UploadButton from "@/components/UploadButton";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 import { useEffect, useState } from "react";
 import { getFilesByUserIds } from "../api/files/fileHandling";
 import { Skeleton } from "@/components/ui/skeleton";
+
 type Props = {};
 
 const page = (props: Props) => {
@@ -72,11 +78,21 @@ const page = (props: Props) => {
                   key={file._id}
                   className="border border-gray-300 rounded-lg overflow-hidden"
                 >
-                  <img
-                    className="object-cover w-60 h-60"
-                    src={file.fileUrl}
-                    alt={file.name}
-                  />
+                  <ContextMenu>
+                    <ContextMenuTrigger>
+                      <img
+                        className="object-cover w-60 h-60 hover:cursor-pointer"
+                        src={file.fileUrl}
+                        alt={file.name}
+                      />
+                    </ContextMenuTrigger>
+                    <ContextMenuContent>
+                      <ContextMenuItem>Donwload</ContextMenuItem>
+                      <ContextMenuItem>Preview</ContextMenuItem>
+                      <ContextMenuItem>Share</ContextMenuItem>
+                      <ContextMenuItem>Fav</ContextMenuItem>
+                    </ContextMenuContent>
+                  </ContextMenu>
                 </li>
               ))}
             </ul>
