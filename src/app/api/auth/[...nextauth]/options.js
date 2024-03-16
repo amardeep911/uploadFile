@@ -1,6 +1,7 @@
 import GithubProvider from "next-auth/providers/github";
 
 import GoogleProvider from "next-auth/providers/google";
+import User from "../../../models/User";
 
 export const options = {
   providers: [
@@ -35,6 +36,38 @@ export const options = {
     }),
   ],
   callbacks: {
+    async signIn({ user, account, profile }) {
+      //I want to save the user data accoiring to user schema
+
+      try {
+        // Extract user details from the profile
+        const { name, email, picture, role } = user;
+        console.log(name);
+        console.log(email);
+        console.log(picture);
+        console.log(role);
+        // Check if the user already exists in your database
+        let existingUser = await User.findOne({ email });
+
+        // If the user doesn't exist, create a new user
+        if (!existingUser) {
+          const newUser = new User({
+            email,
+            name,
+            picture,
+            role,
+            // You may want to add more fields here based on your user schema
+          });
+          await newUser.save();
+          console.log("New user created:", newUser);
+        } else {
+          console.log("User already exists:", existingUser);
+        }
+      } catch (error) {
+        console.error("Error saving user:", error);
+      }
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role || null; // Set role to null if not defined
