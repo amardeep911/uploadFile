@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Upload } from "lucide-react";
+import UploadButton from "@/components/UploadButton";
 type Props = {};
 
 const page = (props: Props) => {
@@ -29,7 +30,7 @@ const page = (props: Props) => {
     <div className="z-50 top-0 w-full  inset-x-0 h-screen flex justify-between">
       <MaxWidthWrapper className="w-full h-full border-4 border-black">
         <div className="bg-gray-300 sticky z-50 top-0 flex justify-end w-full align-middle items-center  inset-x-0 h-16 ">
-          <Button>Upload</Button>
+          <UploadButton />
         </div>
       </MaxWidthWrapper>
     </div>
