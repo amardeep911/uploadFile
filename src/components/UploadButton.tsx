@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Button } from "./ui/button";
 
 import crypto from "crypto";
+import { getSignedURL } from "@/app/action";
 type Props = {};
 
 const UploadButton = (props: Props) => {
@@ -62,32 +63,32 @@ const UploadButton = (props: Props) => {
     // console.log({ file });
 
     const checksum = file ? await calculateChecksum(file) : "";
-    //how to create checksum for this file
+    // how to create checksum for this file
 
-    // if (file) {
-    //   setstatusMessage("Uploading file");
+    if (file) {
+      setstatusMessage("Uploading file");
 
-    //   const signedUrlResult = await getSignedURL(
-    //     file.type,
-    //     file.size,
-    //     checksum
-    //   );
-    //   if (signedUrlResult.error) {
-    //     setstatusMessage("Failed");
-    //     setloading(false);
-    //     console.log(signedUrlResult.error.message);
-    //     return;
-    //   }
-    //   const url = signedUrlResult.success?.url;
+      const signedUrlResult = await getSignedURL(
+        file.type,
+        file.size,
+        checksum
+      );
+      if (signedUrlResult.error) {
+        setstatusMessage("Failed");
+        setloading(false);
+        console.log(signedUrlResult.error.message);
+        return;
+      }
+      const url = signedUrlResult.success?.url;
 
-    //   await fetch(url, {
-    //     method: "PUT",
-    //     body: file,
-    //     headers: {
-    //       "Content-Type": file?.type || "",
-    //     },
-    //   });
-    // }
+      await fetch(url, {
+        method: "PUT",
+        body: file,
+        headers: {
+          "Content-Type": file?.type || "",
+        },
+      });
+    }
 
     setstatusMessage("Finished");
     setloading(false);
