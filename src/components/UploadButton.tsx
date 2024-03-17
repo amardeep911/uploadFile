@@ -7,6 +7,7 @@ import crypto from "crypto";
 import { getSignedURL } from "@/app/action";
 import Dropzone from "react-dropzone";
 import { set } from "react-hook-form";
+import Image from "next/image";
 type Props = {
   onFileUploaded: () => void;
 };
@@ -142,7 +143,13 @@ const UploadButton = ({ onFileUploaded }: Props) => {
               {fileUrl && (
                 <div>
                   <h2>Preview</h2>
-                  <img src={fileUrl} alt="preview" />
+                  <Image
+                    src={fileUrl}
+                    alt="preview"
+                    layout="responsive"
+                    width={500}
+                    height={300}
+                  />
                 </div>
               )}
 

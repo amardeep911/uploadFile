@@ -7,16 +7,25 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+
+interface Session {
+  id: string; // Add the id property
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
+}
+
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { deleteFileById, getFilesByUserIds } from "../api/files/fileHandling";
+import Image from "next/image";
 
 type Props = {};
 
-const page = (props: Props) => {
-  const { data: session } = useSession({
+const Page = (props: Props) => {
+  const { data: session }: any = useSession({
     required: true,
     onUnauthenticated() {
       redirect("api/auth/signin?callbackUrl=/Dashboard");
@@ -77,7 +86,7 @@ const page = (props: Props) => {
                 <ul className="flex flex-wrap justify-start gap-5 p-5">
                   {/* Display at least six skeleton placeholders */}
                   {[...Array(Math.max(8, files.length))].map((_, index) => (
-                    <li>
+                    <li key={index}>
                       <Skeleton className="h-60 w-60" />
                     </li>
                   ))}
@@ -92,7 +101,7 @@ const page = (props: Props) => {
                     >
                       <ContextMenu>
                         <ContextMenuTrigger>
-                          <img
+                          <Image
                             className="object-cover w-60 h-60 items-center hover:cursor-pointer hover:opacity-80"
                             src={file.fileUrl}
                             alt={file.name}
@@ -131,4 +140,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;
