@@ -4,10 +4,12 @@ import { ArrowRight, Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 const MobileNav = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
-
+  const { data: session, status } = useSession();
+console.log(session)
   const toggleOpen = () => setOpen((prev) => !prev);
 
   const pathname = usePathname();
@@ -30,7 +32,7 @@ const MobileNav = () => {
           <ul className="absolute bg-white border-b border-zinc-200 shadow-xl grid w-full gap-3 px-10 pt-20 pb-8">
             <li>
               <Link
-                onClick={() => closeOnCurrent("/sign-up")}
+                onClick={() => closeOnCurrent("/")}
                 className="flex items-center w-full font-semibold text-green-600"
                 href="/"
               >
@@ -51,17 +53,17 @@ const MobileNav = () => {
             <li className="my-3 h-px w-full bg-gray-300" />
             <li>
               <Link
-                onClick={() => closeOnCurrent("/pricing")}
+                onClick={() => closeOnCurrent("/Dashboard")}
                 className="flex items-center w-full font-semibold"
-                href="/pricing"
+                href="/Dashboard"
               >
-                Pricing
+                Dashboard
               </Link>
             </li>
             <li className="my-3 h-px w-full bg-gray-300" />
             <li>
               <Link
-                onClick={() => closeOnCurrent("/dashboard")}
+                onClick={() => closeOnCurrent("/contact")}
                 className="flex items-center w-full font-semibold"
                 href="/contact"
               >
@@ -70,12 +72,21 @@ const MobileNav = () => {
             </li>
             <li className="my-3 h-px w-full bg-gray-300" />
             <li>
-              <Link
-                className="flex items-center w-full font-semibold"
-                href="/about"
-              >
-                About
-              </Link>
+              {session ? (
+                <Link
+                  href="/api/auth/signout?callbackUrl=/"
+                  className="flex items-center w-full text-red-600 font-semibold"
+                >
+                  Logout 
+                </Link>
+              ) : (
+                <Link
+                  href="/api/auth/signin"
+                  className="flex items-center w-full font-semibold"
+                >
+                  Login
+                </Link>
+              )}
             </li>
           </ul>
         </div>

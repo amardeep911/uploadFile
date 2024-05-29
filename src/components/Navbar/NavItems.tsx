@@ -41,7 +41,7 @@ const NavItems = async (props: Props) => {
 
         <li>
           {session ? (
-            <Link href="/api/auth/signout?callbackUrl=/">Logout</Link>
+            <Link href="/api/auth/signout?callbackUrl=/" className="text-red-500 font-semibold">Logout</Link>
           ) : (
             <Link href="/api/auth/signin">Login</Link>
           )}

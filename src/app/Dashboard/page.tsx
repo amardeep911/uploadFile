@@ -73,8 +73,8 @@ const Page = (props: Props) => {
   return (
     <>
       <MaxWidthWrapper className="bg-gray-100 sticky top-16 sm:p-5 p-2 z-20 w-full align-middle items-center inset-x-0 h-fit">
-        <div className="flex justify-between">
-          <h1 className="text-4xl text-black ml-10 mt-2">Dashboard</h1>
+        <div className="flex justify-between align-middle text-center items-center">
+          <h1 className="sm:text-4xl text-2xl text-black  mt-2">Dashboard</h1>
           <UploadButton onFileUploaded={handleFileUploaded} />
         </div>
       </MaxWidthWrapper>
