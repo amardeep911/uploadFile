@@ -4,6 +4,7 @@ import MaxWidthWrapper from "../MaxWidthWrapper";
 import NavItems from "./NavItems";
 import Image from "next/image";
 import Signature from "../../../public/Assets/signature-2.png";
+import uploadX from "../../../public/Assets/uploadX.png";
 import MobileNav from "./MobileNav";
 type Props = {};
 
@@ -17,7 +18,7 @@ const Navbar = (props: Props) => {
               <MobileNav />
               <div className="ml-4 flex lg:ml-0">
                 <Link href="/">
-                  <Image src={Signature} height={100} width={100} alt="LOGO" />
+                  <Image src={uploadX} height={100} width={100} alt="LOGO" />
                 </Link>
               </div>
 

@@ -69,70 +69,72 @@ const Page = (props: Props) => {
     fetchFilesByUserId(session?.user?.id); // Add null checks for session.user
   };
 
+  console.log(files)
   return (
     <>
-      <MaxWidthWrapper className="bg-gray-100  sticky top-16 sm:p-5 p-2 z-20 w-full align-middle items-center  inset-x-0 h-fit ">
-        <div className=" flex justify-between ">
-          <h1 className="text-2xl text-black ml-10 mt-2">Files</h1>
+      <MaxWidthWrapper className="bg-gray-100 sticky top-16 sm:p-5 p-2 z-20 w-full align-middle items-center inset-x-0 h-fit">
+        <div className="flex justify-between">
+          <h1 className="text-4xl text-black ml-10 mt-2">Dashboard</h1>
           <UploadButton onFileUploaded={handleFileUploaded} />
         </div>
       </MaxWidthWrapper>
-      <div className="z-0 top-0 w-full  inset-x-0 h-screen flex justify-between p-5b bg-gray-100 ">
-        <MaxWidthWrapper className="w-full max-h-full sticky top-0 ">
-          {/* //all the file uploded will be view here in this div */}
-          <div>
-            <div className="flex justify-center align-middle items-center mt-5">
-              {loading ? (
-                <ul className="flex flex-wrap justify-start gap-5 p-5">
-                  {/* Display at least six skeleton placeholders */}
-                  {[...Array(Math.max(8, files.length))].map((_, index) => (
-                    <li key={index}>
-                      <Skeleton className="h-60 w-60" />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                // Render fetched images
-                <ul className="grid sm:grid-cols-5 grid-cols-2 gap-5">
-                  {files.map((file: any) => (
-                    <li
-                      key={file._id}
-                      className="border border-gray-300 rounded-lg items-center overflow-hidden"
-                    >
-                      <ContextMenu>
-                        <ContextMenuTrigger>
-                          <Image
-                            className="object-cover w-60 h-60 items-center hover:cursor-pointer hover:opacity-80"
-                            src={file.fileUrl}
-                            alt={file.name}
-                            width={60}
-                            height={60}
-                          />
-                        </ContextMenuTrigger>
-                        <ContextMenuContent>
-                          <ContextMenuItem>Donwload</ContextMenuItem>
-                          <ContextMenuItem
-                            onClick={() => {
-                              window.open(file.fileUrl, "_blank");
-                            }}
-                          >
-                            Preview
-                          </ContextMenuItem>
-                          <ContextMenuItem>Share</ContextMenuItem>
-                          <ContextMenuItem
-                            onClick={() => {
-                              handleFileDeleted(file._id);
-                            }}
-                          >
-                            Delete
-                          </ContextMenuItem>
-                        </ContextMenuContent>
-                      </ContextMenu>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+      <div className="z-0 top-0 w-full inset-x-0 h-screen flex justify-between p-5 bg-gray-100">
+        <MaxWidthWrapper className="w-full max-h-full sticky top-0">
+          <div className="flex justify-center align-middle items-center mt-5">
+            {loading ? (
+              <ul className="flex flex-wrap justify-start gap-5 p-5">
+                {[...Array(Math.max(8, files.length))].map((_, index) => (
+                  <li key={index}>
+                    <Skeleton className="h-60 w-60" />
+                  </li>
+                ))}
+              </ul>
+            ) : files.length > 0 ? (
+              <ul className="grid sm:grid-cols-5 grid-cols-2 gap-5">
+                {files.map((file) => (
+                  <li
+                    key={file._id}
+                    className="border border-gray-300 rounded-lg overflow-hidden"
+                  >
+                    <ContextMenu>
+                      <ContextMenuTrigger>
+                        <Image
+                          className="object-cover w-60 h-60 hover:cursor-pointer hover:opacity-80"
+                          src={file.fileUrl}
+                          alt={file.name}
+                          width={240}
+                          height={240}
+                        />
+                      </ContextMenuTrigger>
+                      <ContextMenuContent>
+                        <ContextMenuItem>Download</ContextMenuItem>
+                        <ContextMenuItem
+                          onClick={() => {
+                            window.open(file.fileUrl, "_blank");
+                          }}
+                        >
+                          Preview
+                        </ContextMenuItem>
+                        <ContextMenuItem>Share</ContextMenuItem>
+                        <ContextMenuItem
+                          onClick={() => {
+                            handleFileDeleted(file._id);
+                          }}
+                        >
+                          Delete
+                        </ContextMenuItem>
+                      </ContextMenuContent>
+                    </ContextMenu>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full w-full">
+                <p className="text-center text-gray-500">
+                  No files found. Click on the upload button above to upload files.
+                </p>
+              </div>
+            )}
           </div>
         </MaxWidthWrapper>
       </div>

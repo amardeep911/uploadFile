@@ -141,14 +141,15 @@ const UploadButton = ({ onFileUploaded }: Props) => {
               </div>
 
               {fileUrl && (
-                <div>
-                  <h2>Preview</h2>
+                <div className="w-full flex-row justify-cente text-center  m-auto text-muted-foreground ">
+                  <h2 className="mb-2 font-semibold text-2xl">Preview</h2>
                   <Image
                     src={fileUrl}
                     alt="preview"
                     layout="responsive"
                     width={500}
                     height={300}
+                    className="border border-gray-300 rounded-lg items-center overflow-hidden"
                   />
                 </div>
               )}

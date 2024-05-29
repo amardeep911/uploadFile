@@ -7,6 +7,8 @@ import { options } from "../../app/api/auth/[...nextauth]/options";
 
 const NavItems = async (props: Props) => {
   const session = await getServerSession(options);
+  const firstLetter = session?.user?.name ? session.user.name.charAt(0).toUpperCase() : '';
+
   return (
     <div className="flex gap-4 h-full">
       <ul className="flex h-full items-center gap-6">
@@ -26,19 +28,12 @@ const NavItems = async (props: Props) => {
             Dashboard
           </Link>
         </li>
-        <li>
-          <Link
-            className=" block font-medium text-gray-900 hover:text-blue-700"
-            href="/contact"
-          >
-            Plan
-          </Link>
-        </li>
+       
 
         <li>
           <Link
             className=" block font-medium text-gray-900 hover:text-blue-700"
-            href="/projects"
+            href="/contact"
           >
             Contact
           </Link>
@@ -53,7 +48,16 @@ const NavItems = async (props: Props) => {
         </li>
         <li>
           <p className="font-bold text-xl text-blue-700">
-            {session ? `${session.user.name}` : "Guest"}
+          {session ? (
+            <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white font-semibold">
+                {firstLetter}
+              </div>
+            
+            </div>
+          ) : (
+            <p className="font-bold text-xl text-blue-700">Guest</p>
+          )}
           </p>
         </li>
       </ul>

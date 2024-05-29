@@ -86,5 +86,12 @@ export const options = {
 
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // Redirect to dashboard if login is successful
+      if (url === '/api/auth/signin' || url === baseUrl) {
+        return `${baseUrl}/Dashboard`;
+      }
+      return url;
+    }
   },
 };
