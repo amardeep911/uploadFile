@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# UploadX
 
-## Getting Started
+## What is this project about?
 
-First, run the development server:
+This Project is a Simple Nextjs Application which demonstrates the following
+1. Authenticating to the application with help of google and github
+2. Use of Next Auth
+3. Various client and server side route protection
+4. Prisma for querring and storing data in MongoDB
+5. Generating aws s3 bucket signed url for file upload
+6. Managing app wide state.
+7. Shadcn Ui implementation for various component
+8. A Scalable folder structure
+
+## Live Application URL
+
+### https://upload-file-liard.vercel.app/
+This URL has the application deployed in
+
+## Prerequisites
+
+### Install Node JS
+Refer to https://nodejs.org/en/ to install nodejs
+
+```bash
+npm install 
+```
+## Live Application URL
+
+The Application is deployed in https://upload-file-liard.vercel.app/
+
+Click on the link to see the application
+
+## Cloning and Running the Application in local
+
+Clone the project into local
+
+Install all the npm packages. Go into the project folder and type the following command to install all npm packages
+
+```bash
+npm install
+```
+Environment Variables are 
+
+```bash
+AWS_BUCKET_NAME
+AWS_BUCKET_REGION
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+GITHUB_ID
+GITHUB_SECRET
+GOOGLE_ID
+GOOGLE_SECRET
+NEXTAUTH_SECRET
+MONGODB_URI
+```
+In order to run the application Type the following command
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The Application Runs on **localhost:3000**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How to contribute to this project?
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Fork the Repository
+2. Clone Your Fork
+   ```bash
+   git clone https://github.com/<your-username>/uploadx.git
+   ```
+3. Create a Branch
+4. Make Your Changes
+5. Commit Your Changes
+6. Push Your Changes
+7. Create a Pull Request
+8. Review Process
 
-## Learn More
+Happy Coding 
+## Made with ❤️ by Amardeep Ranjan
+   
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
