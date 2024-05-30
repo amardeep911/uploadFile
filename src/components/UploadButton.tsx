@@ -104,7 +104,12 @@ const UploadButton = ({ onFileUploaded }: Props) => {
     <Dialog
       open={isOpen}
       onOpenChange={(v) => {
-        if (!v) setIsOpen(v);
+        setIsOpen(v);
+        if (!v) {
+          setFile(undefined);
+          setFileUrl(undefined);
+          setStatusMessage("");
+        }
       }}
     >
       <DialogTrigger onClick={() => setIsOpen(true)} asChild>
@@ -135,7 +140,7 @@ const UploadButton = ({ onFileUploaded }: Props) => {
               </div>
 
               {fileUrl && (
-                <div className="w-full flex-row justify-cente text-center m-auto text-muted-foreground">
+                <div className="w-full flex-row justify-center text-center m-auto text-muted-foreground">
                   <h2 className="mb-2 font-semibold text-2xl">Preview</h2>
                   <Image
                     src={fileUrl}
