@@ -2,24 +2,24 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Button } from "./ui/button";
-
 import crypto from "crypto";
 import { getSignedURL } from "@/app/action";
 import Dropzone from "react-dropzone";
-import { set } from "react-hook-form";
 import Image from "next/image";
+
 type Props = {
   onFileUploaded: () => void;
 };
 
 const UploadButton = ({ onFileUploaded }: Props) => {
-  const [file, setfile] = useState<File | undefined>(undefined);
-
-  const [fileUrl, setfileUrl] = useState<string | undefined>(undefined);
-  const [statusMessage, setstatusMessage] = useState("");
-  const [loading, setloading] = useState(false);
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const [fileUrl, setFileUrl] = useState<string | undefined>(undefined);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const buttonDisabled = loading || !file;
+
   const calculateChecksum = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -44,7 +44,7 @@ const UploadButton = ({ onFileUploaded }: Props) => {
 
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    setfile(file);
+    setFile(file);
 
     if (fileUrl) {
       URL.revokeObjectURL(fileUrl);
@@ -52,26 +52,22 @@ const UploadButton = ({ onFileUploaded }: Props) => {
 
     if (file) {
       const url = URL.createObjectURL(file);
-      setfileUrl(url);
+      setFileUrl(url);
     } else {
-      setfileUrl(undefined);
+      setFileUrl(undefined);
     }
   };
-  console.log(file);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setstatusMessage("Creating");
-    setloading(true);
-
-    // console.log({ file });
+    setStatusMessage("Creating");
+    setLoading(true);
 
     const checksum = file ? await calculateChecksum(file) : "";
-    // how to create checksum for this file
 
     if (file) {
-      setstatusMessage("Uploading file");
+      setStatusMessage("Uploading file");
 
       const signedUrlResult = await getSignedURL(
         file.type,
@@ -79,8 +75,8 @@ const UploadButton = ({ onFileUploaded }: Props) => {
         checksum
       );
       if (signedUrlResult.error) {
-        setstatusMessage("Failed");
-        setloading(false);
+        setStatusMessage("Failed");
+        setLoading(false);
         console.log(signedUrlResult.error.message);
         return;
       }
@@ -94,35 +90,33 @@ const UploadButton = ({ onFileUploaded }: Props) => {
         },
       });
       onFileUploaded();
-      setisOpen(false);
-      setfile(undefined);
-      setfileUrl(undefined);
-      setstatusMessage("");
+      setIsOpen(false);
+      setFile(undefined);
+      setFileUrl(undefined);
+      setStatusMessage("");
     }
 
-    setstatusMessage("");
-    setloading(false);
+    setStatusMessage("");
+    setLoading(false);
   };
-
-  const [isOpen, setisOpen] = useState<boolean>(false);
 
   return (
     <Dialog
       open={isOpen}
       onOpenChange={(v) => {
-        if (!v) setisOpen(v);
+        if (!v) setIsOpen(v);
       }}
     >
-      <DialogTrigger onClick={() => setisOpen(true)} asChild>
+      <DialogTrigger onClick={() => setIsOpen(true)} asChild>
         <Button>Upload</Button>
       </DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="max-h-[80vh] overflow-y-auto">
         <Dropzone
           multiple={false}
           onDrop={(acceptedFiles) => {
-            setfile(acceptedFiles[0]);
-            setfileUrl(URL.createObjectURL(acceptedFiles[0]));
+            setFile(acceptedFiles[0]);
+            setFileUrl(URL.createObjectURL(acceptedFiles[0]));
           }}
         >
           {({ getRootProps, getInputProps }) => (
@@ -141,7 +135,7 @@ const UploadButton = ({ onFileUploaded }: Props) => {
               </div>
 
               {fileUrl && (
-                <div className="w-full flex-row justify-cente text-center  m-auto text-muted-foreground ">
+                <div className="w-full flex-row justify-cente text-center m-auto text-muted-foreground">
                   <h2 className="mb-2 font-semibold text-2xl">Preview</h2>
                   <Image
                     src={fileUrl}
