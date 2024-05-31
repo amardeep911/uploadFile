@@ -5,22 +5,7 @@ import { User } from "../../../models/User";
 
 export const options = {
   providers: [
-    GithubProvider({
-      profile(profile) {
-        console.log("profile Github", profile);
-
-        let userRole = "github user";
-        if (profile?.email === "amardeepranjan911@gmail.com") {
-          userRole = "admin";
-        }
-        return {
-          ...profile,
-          role: userRole,
-        };
-      },
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
+  
     GoogleProvider({
       profile(profile) {
         let userRole = "google user";
